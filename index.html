@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wells Family World Cup Pool 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-dark: #0a3d1f;
+    --green-mid: #145a2e;
+    --green-field: #1a7a3e;
+    --green-light: #25a855;
+    --gold: #f5c842;
+    --gold-dim: #c9a22e;
+    --white: #ffffff;
+    --off-white: #f0ede6;
+    --gray-light: #d4d0c8;
+    --gray-mid: #8a8780;
+    --red: #e63946;
+    --text-dark: #1a1a1a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--green-dark);
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+  }
+  header {
+    background: linear-gradient(160deg, var(--green-mid) 0%, var(--green-dark) 100%);
+    border-bottom: 3px solid var(--gold);
+    padding: 28px 24px 22px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(255,255,255,0.015) 60px, rgba(255,255,255,0.015) 61px);
+    pointer-events: none;
+  }
+  .header-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(42px, 8vw, 72px);
+    letter-spacing: 0.05em;
+    line-height: 1;
+    color: var(--white);
+    text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+  }
+  header h1 span { color: var(--gold); }
+  .header-sub { margin-top: 8px; font-size: 13px; color: var(--gray-light); letter-spacing: 0.04em; }
+  .last-updated { margin-top: 10px; font-size: 11px; color: var(--gray-mid); }
+  .sync-indicator {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 99px;
+    background: rgba(37,168,85,0.2);
+    color: var(--green-light);
+    border: 1px solid rgba(37,168,85,0.3);
+  }
+  .sync-indicator.offline { background: rgba(230,57,70,0.15); color: var(--red); border-color: rgba(230,57,70,0.3); }
+
+  .scoring-bar {
+    background: var(--green-mid);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 10px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px 18px;
+  }
+  .score-pill { font-size: 11px; color: var(--gray-light); display: flex; align-items: center; gap: 5px; }
+  .score-pill strong { color: var(--gold); font-weight: 700; }
+
+  main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 24px 16px 48px;
+  }
+
+  .section-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: rgba(245,200,66,0.25); }
+
+  .leaderboard {
+    background: var(--green-mid);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.07);
+    margin-bottom: 24px;
+  }
+  .lb-header {
+    display: grid;
+    grid-template-columns: 40px 1fr 80px 90px 120px;
+    padding: 10px 16px;
+    background: rgba(0,0,0,0.25);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-mid);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .lb-row {
+    display: grid;
+    grid-template-columns: 40px 1fr 80px 90px 120px;
+    padding: 13px 16px;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    transition: background 0.15s;
+  }
+  .lb-row:last-child { border-bottom: none; }
+  .lb-row:hover { background: rgba(255,255,255,0.04); }
+  .lb-row.rank-1 { background: rgba(245,200,66,0.08); }
+  .lb-row.rank-2 { background: rgba(200,200,200,0.05); }
+  .lb-row.rank-3 { background: rgba(180,120,60,0.06); }
+  .rank-badge { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--gray-mid); }
+  .rank-1 .rank-badge { color: var(--gold); }
+  .rank-2 .rank-badge { color: #c0c0c0; }
+  .rank-3 .rank-badge { color: #cd7f32; }
+  .participant-name { font-weight: 600; font-size: 15px; color: var(--white); }
+  .participant-teams { font-size: 11px; color: var(--gray-mid); margin-top: 2px; }
+  .team-tag { display: inline-block; margin-right: 4px; }
+  .team-tag.alive { color: var(--green-light); }
+  .team-tag.eliminated { color: var(--gray-mid); text-decoration: line-through; }
+  .pts-total { font-family: 'Bebas Neue', sans-serif; font-size: 26px; color: var(--white); line-height: 1; }
+  .pts-label { font-size: 9px; color: var(--gray-mid); text-transform: uppercase; letter-spacing: 0.1em; }
+  .pts-max { font-size: 13px; color: var(--gray-light); font-weight: 500; }
+  .progress-wrap { width: 100%; }
+  .progress-bar-bg { background: rgba(255,255,255,0.1); border-radius: 99px; height: 6px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--green-light), var(--gold)); transition: width 0.4s ease; }
+  .progress-pct { font-size: 10px; color: var(--gray-mid); margin-top: 3px; }
+
+  .teams-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+  }
+  .participant-card {
+    background: var(--green-mid);
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.07);
+    overflow: hidden;
+  }
+  .card-header {
+    background: rgba(0,0,0,0.2);
+    padding: 10px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .card-name { font-weight: 700; font-size: 14px; }
+  .card-pts { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--gold); }
+  .card-body { padding: 10px 14px; display: flex; flex-direction: column; gap: 7px; }
+  .team-row { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+  .team-flag { font-size: 18px; width: 24px; text-align: center; flex-shrink: 0; }
+  .team-name-label { flex: 1; font-weight: 500; }
+  .team-round-select {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 5px;
+    color: var(--white);
+    font-size: 11px;
+    padding: 3px 6px;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    font-family: 'Inter', sans-serif;
+  }
+  .team-round-select:focus { outline: 1px solid var(--gold); }
+  .team-pts-badge { font-family: 'Bebas Neue', sans-serif; font-size: 16px; min-width: 26px; text-align: right; color: var(--gold); }
+  .team-row.out .team-name-label { text-decoration: line-through; color: var(--gray-mid); }
+  .team-row.out .team-round-select { opacity: 0.5; pointer-events: none; }
+  .elim-btn {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 4px;
+    color: var(--gray-light);
+    font-size: 10px;
+    padding: 2px 6px;
+    cursor: pointer;
+    flex-shrink: 0;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.15s;
+  }
+  .elim-btn:hover { border-color: var(--red); color: var(--red); }
+  .elim-btn.is-out { background: rgba(230,57,70,0.15); border-color: var(--red); color: var(--red); }
+
+  .loading-screen {
+    position: fixed;
+    inset: 0;
+    background: var(--green-dark);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    gap: 16px;
+  }
+  .loading-screen h2 { font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: var(--gold); letter-spacing: 0.1em; }
+  .loading-screen p { color: var(--gray-mid); font-size: 13px; }
+  .spinner {
+    width: 36px; height: 36px;
+    border: 3px solid rgba(245,200,66,0.2);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  footer { text-align: center; padding: 20px; font-size: 11px; color: var(--gray-mid); border-top: 1px solid rgba(255,255,255,0.06); }
+
+  @media (max-width: 600px) {
+    .lb-header, .lb-row { grid-template-columns: 32px 1fr 60px 70px; }
+    .lb-header > *:nth-child(5), .lb-row > *:nth-child(5) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="loading-screen" id="loadingScreen">
+  <div class="spinner"></div>
+  <h2>Loading Pool...</h2>
+  <p>Connecting to live database</p>
+</div>
+
+<header>
+  <div class="header-eyebrow">⚽ Family Draft Pool</div>
+  <h1>Wells <span>World Cup</span> 2026</h1>
+  <div class="header-sub">7 Participants · 28 Teams · Snake Draft</div>
+  <div class="last-updated" id="lastUpdated">Last updated: —</div>
+  <div class="sync-indicator" id="syncIndicator">● Live</div>
+</header>
+
+<div class="scoring-bar">
+  <div class="score-pill">Group Stage <strong>+3</strong></div>
+  <div class="score-pill">Round of 32 <strong>+5</strong></div>
+  <div class="score-pill">Round of 16 <strong>+8</strong></div>
+  <div class="score-pill">Quarterfinal <strong>+11</strong></div>
+  <div class="score-pill">Semifinal <strong>+15</strong></div>
+  <div class="score-pill">Champion <strong>+20</strong></div>
+  <div class="score-pill">Max per team <strong>62 pts</strong></div>
+</div>
+
+<main>
+  <div class="section-label">Standings</div>
+  <div class="leaderboard">
+    <div class="lb-header">
+      <div>#</div>
+      <div>Participant</div>
+      <div>Points</div>
+      <div>Max Left</div>
+      <div>Progress</div>
+    </div>
+    <div id="leaderboardBody"></div>
+  </div>
+
+  <div class="section-label">Results Entry</div>
+  <div class="teams-grid" id="teamsGrid"></div>
+</main>
+
+<footer>Wells Family · FIFA World Cup 2026 · Scoring by cousin Alex</footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  databaseURL: "https://wells-worldcup-2026-default-rtdb.firebaseio.com"
+};
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+const ROUNDS = [
+  { value: 'none',  label: 'Group Stage',    pts: 0  },
+  { value: 'group', label: 'Advanced (Grp)', pts: 3  },
+  { value: 'r32',   label: 'Round of 32',    pts: 8  },
+  { value: 'r16',   label: 'Round of 16',    pts: 16 },
+  { value: 'qf',    label: 'Quarterfinal',   pts: 27 },
+  { value: 'sf',    label: 'Semifinal',      pts: 42 },
+  { value: 'champ', label: 'Champion 🏆',    pts: 62 },
+];
+const MAX_PTS = 62;
+
+const FLAGS = {
+  'Spain':'🇪🇸','Morocco':'🇲🇦','Colombia':'🇨🇴','Senegal':'🇸🇳',
+  'France':'🇫🇷','Norway':'🇳🇴','Uruguay':'🇺🇾','Czechia':'🇨🇿',
+  'Portugal':'🇵🇹','Cote dIvoire':'🇨🇮','Ghana':'🇬🇭','Scotland':'🏴󠁧󠁢󠁳󠁣󠁴󠁿',
+  'Brazil':'🇧🇷','Belgium':'🇧🇪','Ecuador':'🇪🇨','Japan':'🇯🇵',
+  'England':'🏴󠁧󠁢󠁥󠁮󠁧󠁿','Netherlands':'🇳🇱','Switzerland':'🇨🇭','Turkey':'🇹🇷',
+  'Argentina':'🇦🇷','Germany':'🇩🇪','Mexico':'🇲🇽','Austria':'🇦🇹',
+  'USA':'🇺🇸','Croatia':'🇭🇷','Canada':'🇨🇦','South Africa':'🇿🇦',
+};
+
+const PARTICIPANTS = [
+  { name: 'Jack Wells',  teams: ['Spain','Morocco','Colombia','Senegal'] },
+  { name: 'Alex Wells',  teams: ['France','Norway','Uruguay','Czechia'] },
+  { name: 'Brad Wells',  teams: ['Portugal','Cote dIvoire','Ghana','Scotland'] },
+  { name: 'Henry Wells', teams: ['Brazil','Belgium','Ecuador','Japan'] },
+  { name: 'Nick Wells',  teams: ['England','Netherlands','Switzerland','Turkey'] },
+  { name: 'Mike Wells',  teams: ['Argentina','Germany','Mexico','Austria'] },
+  { name: 'Grandpa',     teams: ['USA','Croatia','Canada','South Africa'] },
+];
+
+let teamState = {};
+PARTICIPANTS.forEach(p => p.teams.forEach(t => {
+  teamState[t.replace(/[^a-zA-Z0-9]/g,'_')] = { round: 'none', out: false };
+}));
+
+function safeKey(t) { return t.replace(/[^a-zA-Z0-9]/g,'_'); }
+function getPoints(team) {
+  const s = teamState[safeKey(team)];
+  if (!s) return 0;
+  const r = ROUNDS.find(r => r.value === s.round);
+  return r ? r.pts : 0;
+}
+function getMax(team) {
+  const s = teamState[safeKey(team)];
+  if (!s) return MAX_PTS;
+  if (s.out) return getPoints(team);
+  return MAX_PTS;
+}
+function participantPoints(p) { return p.teams.reduce((sum,t) => sum + getPoints(t), 0); }
+function participantMax(p) { return p.teams.reduce((sum,t) => sum + getMax(t), 0); }
+
+function renderLeaderboard() {
+  const sorted = [...PARTICIPANTS]
+    .map(p => ({ ...p, pts: participantPoints(p), max: participantMax(p) }))
+    .sort((a,b) => b.pts - a.pts || b.max - a.max);
+  const body = document.getElementById('leaderboardBody');
+  body.innerHTML = '';
+  sorted.forEach((p, i) => {
+    const rankClass = i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'';
+    const pct = p.max > 0 ? Math.round((p.pts/p.max)*100) : 0;
+    const teamTags = p.teams.map(t => {
+      const alive = !teamState[safeKey(t)]?.out;
+      return `<span class="team-tag ${alive?'alive':'eliminated'}">${FLAGS[t]||''}${t}</span>`;
+    }).join('');
+    body.innerHTML += `
+      <div class="lb-row ${rankClass}">
+        <div class="rank-badge">${i+1}</div>
+        <div>
+          <div class="participant-name">${p.name}</div>
+          <div class="participant-teams">${teamTags}</div>
+        </div>
+        <div><div class="pts-total">${p.pts}</div><div class="pts-label">pts</div></div>
+        <div><div class="pts-max">${p.max}</div><div class="pts-label">max</div></div>
+        <div class="progress-wrap">
+          <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+          <div class="progress-pct">${pct}% of max</div>
+        </div>
+      </div>`;
+  });
+}
+
+function renderCards() {
+  const grid = document.getElementById('teamsGrid');
+  grid.innerHTML = '';
+  PARTICIPANTS.forEach(p => {
+    const totalPts = participantPoints(p);
+    const teamsHtml = p.teams.map(t => {
+      const key = safeKey(t);
+      const s = teamState[key] || { round:'none', out:false };
+      const pts = getPoints(t);
+      const options = ROUNDS.map(r =>
+        `<option value="${r.value}" ${s.round===r.value?'selected':''}>${r.label}</option>`
+      ).join('');
+      return `
+        <div class="team-row ${s.out?'out':''}" id="row-${key}">
+          <div class="team-flag">${FLAGS[t]||'⚽'}</div>
+          <div class="team-name-label">${t}</div>
+          <select class="team-round-select" data-key="${key}" onchange="window.onRoundChange('${key}', this.value)">${options}</select>
+          <button class="elim-btn ${s.out?'is-out':''}" onclick="window.onToggleOut('${key}')">${s.out?'✗ Out':'Active'}</button>
+          <div class="team-pts-badge">${pts>0?pts:'—'}</div>
+        </div>`;
+    }).join('');
+    grid.innerHTML += `
+      <div class="participant-card">
+        <div class="card-header">
+          <div class="card-name">${p.name}</div>
+          <div class="card-pts">${totalPts} <span style="font-size:12px;color:var(--gray-mid);font-family:Inter,sans-serif">pts</span></div>
+        </div>
+        <div class="card-body">${teamsHtml}</div>
+      </div>`;
+  });
+}
+
+function renderAll() {
+  renderLeaderboard();
+  renderCards();
+}
+
+window.onRoundChange = function(key, value) {
+  if (value === 'champ') teamState[key].out = false;
+  update(ref(db, 'teams/' + key), { round: value, out: value==='champ' ? false : (teamState[key]?.out||false) });
+};
+window.onToggleOut = function(key) {
+  if (teamState[key]?.round === 'champ') return;
+  const newOut = !teamState[key]?.out;
+  update(ref(db, 'teams/' + key), { out: newOut });
+};
+
+// Listen for live updates from Firebase
+onValue(ref(db, 'teams'), (snapshot) => {
+  const data = snapshot.val();
+  if (data) {
+    Object.keys(data).forEach(key => {
+      teamState[key] = data[key];
+    });
+  }
+  document.getElementById('loadingScreen').style.display = 'none';
+  document.getElementById('lastUpdated').textContent =
+    'Last updated: ' + new Date().toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+  renderAll();
+}, (error) => {
+  document.getElementById('syncIndicator').textContent = '● Offline';
+  document.getElementById('syncIndicator').classList.add('offline');
+  document.getElementById('loadingScreen').style.display = 'none';
+  renderAll();
+});
+</script>
+</body>
+</html>
